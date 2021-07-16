@@ -19,20 +19,18 @@ function init() {
     if (item.skipWeek && isWeek()) {
       break;
     }
-    if (!item.skipWeek) {
-      const {
-        time, name: title, message, count, delay,
-      } = item;
+    const {
+      time, name: title, message, count, delay,
+    } = item;
       // 需要重复提醒的
-      if (count) {
-        const t = getTimeByCount(time, count, delay);
-        t.forEach((tItem) => {
-          startJob(tItem, message, title);
-        });
-      } else {
-        // 不需要重复提醒
-        startJob(time, message, title);
-      }
+    if (count) {
+      const t = getTimeByCount(time, count, delay);
+      t.forEach((tItem) => {
+        startJob(tItem, message, title);
+      });
+    } else {
+      // 不需要重复提醒
+      startJob(time, message, title);
     }
   }
 }
