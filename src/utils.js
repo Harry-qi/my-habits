@@ -1,5 +1,6 @@
 const schedule = require('node-schedule');
 const notifier = require('node-notifier');
+const { lastIndexOf } = require('../config');
 // 定时任务
 function sendMsg(message, title) {
   notifier.notify({
@@ -7,14 +8,56 @@ function sendMsg(message, title) {
     message,
   });
 }
+// 小于10补0
+function toZero(n) {
+  return n < 10 ? `0${n}` : n;
+}
+/*
+将分钟数转为小时
+例如： 62 -> '01:02+'
+*/
+function mtoH(minute) {
+  if (typeof minute === 'string') {
+    return minute;
+  }
+  const h = toZero(Math.floor(minute / 60));
+  const m = toZero(minute % 60);
+  return `${h}:${m}`;
+}
+/*
+将时间转分钟
+例如：'10:12' -> 612  (分钟)
+*/
+function hToM(timeStr) {
+  const [temH, temM] = timeStr.split(':');
+  const h = temH * 60;
+  const m = temM * 1;
+  return h + m;
+}
+/*
+根据起始时间和delay数组转为数组
+例如：time:"10:30" delay:[60,120] -> ["11:30","13:30"]
+*/
+function timeToArrayByDelay(time, delay) {
+  const m = hToM(time);
+  const temRes = [time]; // 起始时间也放在里面
+  delay.reduce((a, c) => {
+    temRes.push(a + c);
+    return a + c;
+  }, m);
+  return temRes.map((item) => mtoH(item));
+}
 // 根据count和delay得出多个时间
-function getTimeByCount(time, count = 2, delay = 1) {
-  const res = [];
-  const temTime = time.split(':');
-  const h = temTime[0] * 1;
-  const m = temTime[1] * 1;
-  for (let index = 0; index < count; index++) {
-    res.push(`${h + Math.floor((delay * index) / 60)}:${m + ((delay * index) % 60)}`);
+function getTimeByCount(time, count = 2, delay) {
+  let res = [];
+  if (Array.isArray(delay)) {
+    res = timeToArrayByDelay(time, delay);
+  } else {
+    const temDelay = [];
+    for (let index = 0; index < count; index++) {
+      temDelay.push(delay);
+    }
+    res = timeToArrayByDelay(time, temDelay);
   }
   return res;
 }

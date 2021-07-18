@@ -11,8 +11,8 @@ module.exports = [
     name: '吃维生素',
     message: '及时补充维生素',
     time: '09:00',
-    count: 3,
-    delay: 60 * 3,
+    count: 2,
+    delay: [60 * 3 + 25, 60 * 6],
   },
   {
     name: '基金',

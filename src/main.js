@@ -17,7 +17,7 @@ function init() {
     const item = allHabits[index];
     // 如果设置跳过了周末,并且今天是周末,则不执行提醒
     if (item.skipWeek && isWeek()) {
-      break;
+      continue;
     }
     const {
       time, name: title, message, count, delay,
