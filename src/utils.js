@@ -127,9 +127,33 @@ function getAllTask(arr) {
   });
   console.log(resStr);
 }
+// 对config.js的格式进行验证
+function verifyConfig(arr) {
+  let res = '';
+  for (let index = 0; index < arr.length; index++) {
+    const item = arr[index];
+    const {
+      name, time, delay, count,
+    } = item;
+    if (!name) {
+      res = false;
+      break;
+    }
+    if (!time) {
+      res = false;
+      break;
+    }
+    if (typeof delay === 'number' && !count) {
+      res = false;
+      break;
+    }
+  }
+  return res;
+}
 module.exports = {
   ScheduleClass,
   isWeek,
   getTimeByCount,
   getAllTask,
+  verifyConfig,
 };

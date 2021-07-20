@@ -1,6 +1,6 @@
 const allHabits = require('../config');
 const {
-  isWeek, ScheduleClass, getTimeByCount, getAllTask,
+  isWeek, ScheduleClass, getTimeByCount, getAllTask, verifyConfig,
 } = require('./utils');
 
 // 开始任务
@@ -15,6 +15,10 @@ function startJob(time, message, title) {
 }
 
 function init() {
+  if (!verifyConfig(allHabits)) {
+    console.log('请检查config.js的配置');
+    return;
+  }
   getAllTask(allHabits);
   for (let index = 0; index < allHabits.length; index++) {
     const item = allHabits[index];

@@ -16,5 +16,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'consistent-return': 'off',
     'no-plusplus': 'off',
+    'no-continue': 'off',
   },
 };
