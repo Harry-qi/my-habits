@@ -1,5 +1,7 @@
 const allHabits = require('../config');
-const { isWeek, ScheduleClass, getTimeByCount } = require('./utils');
+const {
+  isWeek, ScheduleClass, getTimeByCount, getAllTask,
+} = require('./utils');
 
 // 开始任务
 function startJob(time, message, title) {
@@ -13,6 +15,7 @@ function startJob(time, message, title) {
 }
 
 function init() {
+  getAllTask(allHabits);
   for (let index = 0; index < allHabits.length; index++) {
     const item = allHabits[index];
     // 如果设置跳过了周末,并且今天是周末,则不执行提醒

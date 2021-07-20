@@ -1,6 +1,6 @@
 const schedule = require('node-schedule');
 const notifier = require('node-notifier');
-const { lastIndexOf } = require('../config');
+
 // 定时任务
 function sendMsg(message, title) {
   notifier.notify({
@@ -95,8 +95,41 @@ class ScheduleClass {
     this.job.cancel();
   }
 }
+// 获取所有习惯并根据时间排序
+function getAllTask(arr) {
+  const res = [];
+  arr.forEach((item) => {
+    const {
+      name, time, count, delay,
+    } = item;
+    if (count) {
+      const t = getTimeByCount(time, count, delay);
+      t.forEach((tItem) => {
+        res.push({
+          name,
+          time: tItem,
+        });
+      });
+    } else {
+      res.push({
+        name,
+        time,
+      });
+    }
+  });
+  // 根据时间排序
+  res.sort((a, b) => hToM(a.time) - hToM(b.time));
+
+  // 打印最终排序的字符串
+  let resStr = '下面是一天的安排\n';
+  res.forEach((item) => {
+    resStr += `${item.time} ${item.name}\n`;
+  });
+  console.log(resStr);
+}
 module.exports = {
   ScheduleClass,
   isWeek,
   getTimeByCount,
+  getAllTask,
 };
