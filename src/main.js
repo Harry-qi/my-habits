@@ -23,7 +23,7 @@ function init() {
   for (let index = 0; index < allHabits.length; index++) {
     const item = allHabits[index];
     // 如果设置跳过了周末,并且今天是周末,则不执行提醒
-    if (item.skipWeek && isWeek()) {
+    if ((item.skipWeek && isWeek()) || item.stop) {
       continue;
     }
     const {

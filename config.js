@@ -13,6 +13,7 @@ module.exports = [
     time: '09:00',
     count: 2,
     delay: [60 * 3 + 25, 60 * 6],
+    stop: true,
   },
   {
     name: '基金',

@@ -98,10 +98,14 @@ class ScheduleClass {
 // 获取所有习惯并根据时间排序
 function getAllTask(arr) {
   const res = [];
-  arr.forEach((item) => {
+  for (let index = 0; index < arr.length; index++) {
+    const item = arr[index];
     const {
-      name, time, count, delay,
+      name, time, count, delay, stop,
     } = item;
+    if (stop) {
+      continue;
+    }
     if (count) {
       const t = getTimeByCount(time, count, delay);
       t.forEach((tItem) => {
@@ -116,7 +120,7 @@ function getAllTask(arr) {
         time,
       });
     }
-  });
+  }
   // 根据时间排序
   res.sort((a, b) => hToM(a.time) - hToM(b.time));
 
@@ -129,7 +133,7 @@ function getAllTask(arr) {
 }
 // 对config.js的格式进行验证
 function verifyConfig(arr) {
-  let res = '';
+  let res = true;
   for (let index = 0; index < arr.length; index++) {
     const item = arr[index];
     const {
