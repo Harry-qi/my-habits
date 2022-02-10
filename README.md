@@ -13,7 +13,7 @@
 | time  | 提醒的时间,例如: '15:00' | 是 | string |
 | count | 每天提醒次数,例如: 2 | 否 | number |
 | delay | 间隔分钟数,例如: 60；也支持数组，例如:[60,60*2]| 否 | number/array  |
-| skipWeek | 是否跳过周末。true:跳过周末,默认不跳过周末  | 否| boolean |
+| skipWeek | 是否跳过节假日。true:跳过节假日,默认不跳过节假日  | 否| boolean |
 |stop|是否暂停,true:暂停|否|boolean|
 ---
 delay为number的时候，count必填 

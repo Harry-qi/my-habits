@@ -1,6 +1,8 @@
 const schedule = require('node-schedule');
 const notifier = require('node-notifier');
-
+const axios = require('axios');
+const dayjs = require('dayjs');
+const { IS_WORK_DAY, IS_OFF_DAY, IS_OVERTIME_DAY } = require('./const');
 // 定时任务
 function sendMsg(message, title) {
   notifier.notify({
@@ -154,10 +156,29 @@ function verifyConfig(arr) {
   }
   return res;
 }
+// 通过第三方接口获取节假日信息
+// 仓库地址：https://github.com/NateScarlet/holiday-cn
+async function getOffDay() {
+  const year = new Date().getFullYear();
+  const url = `https://natescarlet.coding.net/p/github/d/holiday-cn/git/raw/master/${year}.json`;
+  const res = await axios.get(url);
+  return res.data.days;
+}
+// 判断当前日期是需要调休的工作日、正常工作日还是节假日
+async function jumpDayType() {
+  const nowDay = dayjs(new Date()).format('YYYY-MM-DD');
+  const offDayArr = await getOffDay();
+  const targetDay = offDayArr.find((item) => item.date === nowDay);
+  if (targetDay) {
+    return targetDay.isOffDay ? IS_OFF_DAY : IS_OVERTIME_DAY;
+  }
+  return IS_WORK_DAY;
+}
 module.exports = {
   ScheduleClass,
   isWeek,
   getTimeByCount,
   getAllTask,
   verifyConfig,
+  jumpDayType,
 };

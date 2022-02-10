@@ -1,7 +1,8 @@
 const allHabits = require('../config');
 const {
-  isWeek, ScheduleClass, getTimeByCount, getAllTask, verifyConfig,
+  isWeek, ScheduleClass, getTimeByCount, getAllTask, verifyConfig, jumpDayType,
 } = require('./utils');
+const { IS_OFF_DAY, IS_OVERTIME_DAY } = require('./const');
 
 // 开始任务
 function startJob(time, message, title) {
@@ -22,14 +23,18 @@ function init() {
   getAllTask(allHabits);
   for (let index = 0; index < allHabits.length; index++) {
     const item = allHabits[index];
-    // 如果设置跳过了周末,并且今天是周末,则不执行提醒
-    if ((item.skipWeek && isWeek()) || item.stop) {
+    // 如果设置跳过了节假日,并且今天是休息的节假日,则不执行提醒
+    if ((item.skipWeek && jumpDayType() === IS_OFF_DAY) || item.stop) {
       continue;
     }
     const {
-      time, name: title, message, count, delay,
+      time, name: title, count, delay,
     } = item;
-      // 需要重复提醒的
+    let { message } = item;
+    if (jumpDayType() === IS_OVERTIME_DAY) {
+      message = `今天依旧是工作日，${message}`;
+    }
+    // 需要重复提醒的
     if (count) {
       const t = getTimeByCount(time, count, delay);
       t.forEach((tItem) => {
