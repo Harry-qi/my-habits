@@ -1,5 +1,7 @@
 # 我的日常习惯  
 用来每天提醒我一些琐碎的事情
+效果图
+![1](https://s2.loli.net/2022/02/10/u7G2IKbrTlm5eY4.jpg)
 ## 使用方式
 1. 编辑`config.js`，在里面书写习惯
 2. npm i 
@@ -19,5 +21,4 @@
 delay为number的时候，count必填 
 
 delay为array的时候，count不用填
-      ,
      
